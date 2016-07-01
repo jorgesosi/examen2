@@ -64,16 +64,26 @@ void ingreso(){
 	fprintf(archivo,"%s",libro.nombre);
 	fprintf(archivo,"%s",libro.autor);
 	fprintf(archivo,"%s",libro.categoria);*/
-	fclose(archivo);
+	fclose(archivo);//cerramos el archivo para evitar conflictos de futuras apertura
 }
 
 void listar(){
 	/*int i;
 	for (i=0;i<3;i++){// se declara el entero para usarlo en el bucle for para mostrar 3 datos*/
-		printf("%s",libro.id);
+	archivo = fopen("/home/jorge/Documentos/sistemas 2016/examen2/libreria.txt", "r");
+	
+	while (!feof (archivo)){
+		fread(&libro,sizeof(libro),1,archivo);// lee la estructura del archivo 
+		
+		printf("%s",libro.id);// muestra por pantalla la estructura
 		printf("%s",libro.nombre);
 		printf("%s",libro.autor);
 		printf("%s",libro.categoria);
+		getchar();
+		system("clear");
+		fclose(archivo);// cerramos el archivo 
+	}
+		
 		
 	//}//cierro del for
 }
