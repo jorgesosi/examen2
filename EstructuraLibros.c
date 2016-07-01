@@ -8,9 +8,10 @@ struct Libros{ // se crea la estructura Libros
 	char autor[50];
 	char categoria[50];
 };
-struct Libros libro[3];
+struct Libros libro;//antes se usaba  struct Libros libro[3]   para cargar el aray d ela estructura
 void ingreso();
 void listar();
+FILE *archivo;
 int main (){
 	char opt;
 	for(;;){
@@ -22,11 +23,15 @@ int main (){
 		getchar();
 		switch (opt){
 			case '1':
+			//system("clear");
 			ingreso();
 			//getchar();
+			
 			break;
 			case '2':
+			//system("clear");
 			listar();
+			
 			break;
 			case 'x':
 			exit(0);// sale de la apliciacion presionando x
@@ -40,28 +45,36 @@ int main (){
 	
 }
 void ingreso(){
-	int i;
+	archivo = fopen("/home/jorge/Documentos/sistemas 2016/examen2/libreria.txt", "a+");
+	/*int i;// se declara el entero para usarlo en el bucle for de 3 datos
 	for (i=0;i<3;i++){
-		fflush(stdin);
+		fflush(stdin);*/
 	printf("Ingrese el Id del libro: \n");
-	fgets(libro[i].id,10,stdin);
+	fgets(libro.id,10,stdin);
 	printf ("Ingrese el Nombre del libro: \n");
-	fgets(libro[i].nombre,50,stdin);
+	fgets(libro.nombre,50,stdin);//se usan libro[i].nombre para cargar los datos de la matriz, se borran para los archivos
 	printf ("Ingrese el Autor del libro: \n");
-	fgets(libro[i].autor,50,stdin);
+	fgets(libro.autor,50,stdin);
 	printf ("Ingrese la Categoria del libro: \n");
-	fgets(libro[i].categoria,50,stdin);
-	}
+	fgets(libro.categoria,50,stdin);
+	//}// cierre del bucle for
+	system("clear");
+	fwrite(&libro,sizeof(libro),1,archivo); 
+	/*fprintf(archivo,"%s",libro.id);
+	fprintf(archivo,"%s",libro.nombre);
+	fprintf(archivo,"%s",libro.autor);
+	fprintf(archivo,"%s",libro.categoria);*/
+	fclose(archivo);
 }
 
 void listar(){
-	int i;
-	for (i=0;i<3;i++){
-		printf("%s",libro[i].id);
-		printf("%s",libro[i].nombre);
-		printf("%s",libro[i].autor);
-		printf("%s",libro[i].categoria);
+	/*int i;
+	for (i=0;i<3;i++){// se declara el entero para usarlo en el bucle for para mostrar 3 datos*/
+		printf("%s",libro.id);
+		printf("%s",libro.nombre);
+		printf("%s",libro.autor);
+		printf("%s",libro.categoria);
 		
-	}
+	//}//cierro del for
 }
 
