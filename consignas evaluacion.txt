@@ -1,0 +1,25 @@
+1) impelmentar una estructura de datos libros
+nombre estructura libro
+campos id
+nombre 
+autor
+categoria
+
+2)mostrar menu de opciones
+1 ingresar niuevo libro
+2 listar libros
+3 salir con caracter x
+
+3) implementar opciones para la salida en pantalla
+
+usar archivo texto como base de datos
+
+agregar las opciones 
+editar registro
+eliminar registro
+
+
+
+
+
+
