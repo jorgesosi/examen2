@@ -12,15 +12,17 @@ struct Libros libro;//antes se usaba  struct Libros libro[3]   para cargar el ar
 void ingreso();
 void listar();
 void editar();
+void borrar();
 FILE *archivo;
 int main (){
 	char opt;
 	for(;;){
 		printf("MENU\n");// muestra por pantalla el menu de ingreso d edatos
 		printf("1- Ingrese Nuevo Libro\n");
-		printf("2- Listado de libros\n\n");
+		printf("2- Listado de libros\n");
 		printf("3- editar libro\n");
-		printf(" para salir pulse 'x'");
+		printf("4 - borrar\n");
+		printf(" para salir pulse 'x'\n");
 		//scanf ("%c" ,&opt);
 		opt=getchar();
 		getchar();
@@ -35,6 +37,9 @@ int main (){
 			case '3':
 			editar();
 			break;
+			case '4':
+			borrar();
+			break;
 			case 'x':
 			exit(0);// sale de la apliciacion presionando x
 			break;
@@ -46,10 +51,9 @@ int main (){
 }
 void ingreso(){
 	archivo = fopen("/home/jorge/Documentos/sistemas 2016/examen2/libreria.dat", "ab+");
-	//int i;// se declara el entero para usarlo en el bucle for de 3 datos
-	//for (i=0;i<3;i++){
-		fflush(stdin);
-		fflush(stdout);
+	/*int i;// se declara el entero para usarlo en el bucle for de 3 datos
+	for (i=0;i<3;i++){
+		fflush(stdin);*/
 	printf("Ingrese el Id del libro: \n");
 	fgets(libro.id,10,stdin);
 	printf ("Ingrese el Nombre del libro: \n");
@@ -60,18 +64,12 @@ void ingreso(){
 	fgets(libro.categoria,50,stdin);
 	//}// cierre del bucle for
 	system("clear");
-	fwrite(&libro,sizeof(libro),1,archivo); // fwrite escribe en archivo la estructura completa
-	/*fprintf(archivo,"%s",libro.id);// fprintf imprime los valores en el archivo pero trabaja sobre valores individuales, no con la estructura
-	fprintf(archivo,"%s",libro.nombre);// guarda los valores en el orden, pero no deja constancia a que variable se les asigna, por lo que si se invierte
-	fprintf(archivo,"%s",libro.autor);// el de las variables esto producira un error
-	fprintf(archivo,"%s",libro.categoria);*/
+	fwrite(&libro,sizeof(libro),1,archivo); 
 	fclose(archivo);//cerramos el archivo para evitar conflictos de futuras apertura
 }
 
 void listar(){
 	system("clear");
-	//int i;
-	/*for (i=0;i<3;i++){// se declara el entero para usarlo en el bucle for para mostrar 3 datos*/
 	archivo = fopen("/home/jorge/Documentos/sistemas 2016/examen2/libreria.dat", "rb");
 	while (!feof (archivo)){
 		fread(&libro,sizeof(libro),1,archivo);// lee la estructura del archivo 
@@ -82,15 +80,12 @@ void listar(){
 			printf("CATEGORIA: %s",libro.categoria);
 			fflush(stdout);
 			getchar();
-			system("clear");
-			
+			system("clear");			
 		}
 	}
-	fclose(archivo);// cerramos el archivo 	
-	//}//cierro del for
+	fclose(archivo);
 }
 void editar(){
-	fflush(stdin);
 	char id[10];
 	char opt1;
 	int tama;
@@ -132,8 +127,9 @@ void editar(){
 						fgets(libro.categoria,50,stdin);
 						break;
 						case 't':
-						fseek(archivo,-tama, SEEK_CUR);	// el uso del fseek se toma de un ejemplo de agenda y se analiza el uso buscando informacion el libro turboc/c++ manual de referencia de schildt seek_cur ubica el posicion actual del archivo
+						fseek(archivo,-tama, SEEK_CUR);
 						fwrite(&libro,sizeof(libro),1,archivo);
+						system("clear");
 						break;
 						default:
 						break;
@@ -147,4 +143,36 @@ void editar(){
 		
 		fclose(archivo);
 	}
-			
+	
+	void borrar(){
+	char id[10];
+	char opt2;
+	int tama;
+	system("clear");
+	tama=sizeof(libro);//verifica el tamaño de la estructura y se la asigna a la variable
+	archivo = fopen("/home/jorge/Documentos/sistemas 2016/examen2/libreria.dat", "rb+");
+		printf("Ingrese el id del libro a borrar: ");
+		fgets(id,10,stdin);// se carga el conjunto de datos a buscar en la estructura, pueden ser varios 
+		//getchar();
+		system("clear");
+		while(!feof(archivo)){
+			fread(&libro,sizeof(libro),1,archivo);// lee la estructura del archivo 
+			 if (strcmp(id,libro.id)==0){
+				printf("1- ID: %s",libro.id);// muestra por pantalla la estructura
+				printf("2- NOMBRE: %s",libro.nombre);
+				printf("3- AUTOR: %s",libro.autor);
+				printf("4- CATEGORIA: %s",libro.categoria);
+				printf("seguro que desea borrar el registro (s/n): ");
+				opt2=getchar();
+				getchar();
+				if (opt2 =='s' ){
+						strcpy(libro.id,"*");
+						fseek(archivo,-tama, SEEK_CUR);
+						fwrite(&libro,sizeof(libro),1,archivo);
+				}
+			}
+					
+		}
+				
+		fclose(archivo);
+	}		
